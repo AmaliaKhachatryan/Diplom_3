@@ -1,7 +1,8 @@
 package pageobjects;
 
 
-import io.restassured.response.ValidatableResponse;
+import io.qameta.allure.Step;
+import jdk.jfr.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,16 +12,11 @@ import org.openqa.selenium.html5.WebStorage;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-
 import java.util.concurrent.TimeUnit;
-
-import static io.restassured.RestAssured.given;
-
 
 public class UserLogin extends UserRegistration {
     WebDriver driver;
-    protected static final By SING_IN_ACCOUNT = By.xpath(".//button[text()='Войти в аккаунт']");
+    protected static final By SIGN_IN_ACCOUNT = By.xpath(".//button[text()='Войти в аккаунт']");
     protected static final By PROFILE_STRING = By.xpath(".//*[text()='Профиль']");
     protected static final By LOGIN_BUTTON = By.xpath(".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']");
     protected static final By LOGIN_STRING = By.xpath(".//*[@class='Auth_link__1fOlj']");
@@ -38,7 +34,7 @@ public class UserLogin extends UserRegistration {
         return new WebDriverWait(driver, 15)
                 .until(ExpectedConditions.visibilityOfElementLocated(element));
     }
-
+    @Step("Авторизация после регистрации")
     public UserLogin userLogin(String email, String password) {
         wait(ACCOUNT_LOGIN_STRING);
         setUserEmailLogin(email);
@@ -47,15 +43,16 @@ public class UserLogin extends UserRegistration {
         return this;
     }
 
+    @Step("Авторизация через кнопку (Войти в аккаунт)")
     public UserLogin loginSingInAccountButton(String email, String password) {
         openRage();
-        wait(SING_IN_ACCOUNT);
-        driver.findElement(SING_IN_ACCOUNT).click();
+        wait(SIGN_IN_ACCOUNT);
+        driver.findElement(SIGN_IN_ACCOUNT).click();
         driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         userLogin(email, password);
         return this;
     }
-
+    @Step("Авторизация через личный  кабинет")
     public UserLogin loginPersonalAccountButton(String email, String pass) {
         openRage();
         wait(PERSONAL_ACCOUNT_BUTTON);
@@ -63,7 +60,7 @@ public class UserLogin extends UserRegistration {
         userLogin(email, pass);
         return this;
     }
-
+    @Step("Авторизация через  форму регистрации")
     public UserLogin loginByRegistrationForm(String email, String pass) {
         openRage();
         wait(PERSONAL_ACCOUNT_BUTTON);
@@ -76,7 +73,7 @@ public class UserLogin extends UserRegistration {
         userLogin(email, pass);
         return this;
     }
-
+    @Step("Авторизация через форму восстановления пароля")
     public UserLogin loginByPasswordRecovery(String email, String pass) {
         openRage();
         wait(PERSONAL_ACCOUNT_BUTTON);
@@ -93,7 +90,7 @@ public class UserLogin extends UserRegistration {
     public boolean checkUserLogin() {
         return wait(CHECKOUT_BUTTON).isDisplayed();
     }
-
+    @Step("Выход из личного кабинета.")
     public UserLogin logoutOfPersonalAccount() {
         wait(EXIT_BUTTON);
         driver.findElement(EXIT_BUTTON).click();
@@ -128,30 +125,15 @@ public class UserLogin extends UserRegistration {
         driver.findElement(PERSONAL_ACCOUNT_BUTTON).click();
         return this;
     }
-
     public boolean checkingSuccessfulProfile() {
         return wait(PROFILE_STRING).getText().equals("Профиль");
     }
-
+    @Step("Получить токен клиента.")
     public String getToken() {
         WebStorage webStorage = (WebStorage) new Augmenter().augment(driver);
         LocalStorage localStorage = webStorage.getLocalStorage();
         return localStorage.getItem("accessToken");
     }
 
-    public ValidatableResponse removeUser(String token) {
-        return given()
-                .spec(getBaseReqSpec())
-                .header("authorization", token)
-                .when()
-                .delete(USER_ACTIONS)
-                .then();
-    }
 
-    public boolean checkingRemoveUser(String token) {
-
-        return removeUser(token).extract()
-                .body()
-                .path("message").equals("User successfully removed");
-    }
 }

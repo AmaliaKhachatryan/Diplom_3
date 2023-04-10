@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: pageobjects.UserLoginTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 224.531 s - in pageobjects.UserLoginTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 245.706 s - in pageobjects.UserLoginTest

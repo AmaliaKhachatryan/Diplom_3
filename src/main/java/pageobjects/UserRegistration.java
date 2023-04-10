@@ -1,7 +1,7 @@
 package pageobjects;
 
-import databaseuri.BaseURI;
-
+import datauser.DataUser;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,11 +11,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-public class UserRegistration extends BaseURI {
-
+public class UserRegistration {
+    protected static final String STELLAR_BURGERS_SITE = "https://stellarburgers.nomoreparties.site/";
     protected static final By PERSONAL_ACCOUNT_BUTTON = By.xpath(".//*[text()='Личный Кабинет']");
     protected static final By REGISTER_STRING = By.xpath(".//*[@class='Auth_link__1fOlj']");
-    protected static final By SING_IN_BUTTON = By.xpath(".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']");
+    protected static final By SIGN_IN_BUTTON = By.xpath(".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']");
     protected static final By USERNAME_EMAIL_STRING = (By.xpath("//*[@type='text']"));
     protected static final By USER_PASSWORD_STRING = By.xpath("//*[@type='password']");
     protected static final By REGISTER_BUTTON = By.xpath(".//button[text()='Зарегистрироваться']");
@@ -32,7 +32,7 @@ public class UserRegistration extends BaseURI {
         return new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOfElementLocated(element));
     }
-
+    @Step("Регистрация пользователя")
     public UserRegistration userRegistration(DataUser user) {
         openRage();
         clickOnPersonalAccountButtonForRegistration();
@@ -44,11 +44,11 @@ public class UserRegistration extends BaseURI {
         return this;
     }
 
-    public boolean checkingUserAlreadyExist() {
+    public boolean checkUserAlreadyExist() {
         return wait(ERROR_MESSAGE).getText().equals("Такой пользователь уже существует");
     }
 
-    public boolean checkingIncorrectPassword() {
+    public boolean checkIncorrectPassword() {
         return wait(ERROR_MESSAGE).getText().equals("Некорректный пароль");
     }
 
@@ -60,7 +60,7 @@ public class UserRegistration extends BaseURI {
 
     public UserRegistration clickOnPersonalAccountButtonForRegistration() {
         driver.findElement(PERSONAL_ACCOUNT_BUTTON).click();
-        wait(SING_IN_BUTTON);
+        wait(SIGN_IN_BUTTON);
         return this;
     }
 
@@ -97,7 +97,7 @@ public class UserRegistration extends BaseURI {
         return this;
     }
 
-    public boolean checkingSuccessfulRegistration() {
+    public boolean checkSuccessfulRegistration() {
         return wait(ACCOUNT_LOGIN_STRING).getText().equals("Вход");
     }
 }

@@ -1,4 +1,4 @@
-package pageobjects;
+package datauser;
 
 public class DataUser {
     private String email;
@@ -14,7 +14,6 @@ public class DataUser {
     public String getEmail() {
         return email;
     }
-
     public String getPassword() {
         return password;
     }

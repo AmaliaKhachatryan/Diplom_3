@@ -1,58 +1,60 @@
 package pageobjects;
 
-import io.qameta.allure.Step;
+import databaseuri.BaseURI;
+import datauser.DataUser;
+import datauser.GeneratorUser;
+import jdk.jfr.Description;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class UserLoginTest {
-    static DataUser user = GeneratorUser.getRandom();
-    static UserRegistration registration;
-    static UserLogin login;
-    static WebDriver driver;
+    protected static final String STELLAR_BURGERS_SITE_LOGIN="https://stellarburgers.nomoreparties.site/login";
+    private DataUser user = GeneratorUser.getRandom();
+    private UserLogin login;
+    private WebDriver driver;
+    private BaseURI baseURI;
 
     @Before
     public void setUp() {
         // System.setProperty("webdriver.chrome.driver","yandexdriver.exe");
+        baseURI = new BaseURI();
+        baseURI.createUser(user);
         driver = new ChromeDriver();
-        registration = new UserRegistration(driver);
         login = new UserLogin(driver);
-        registration.userRegistration(user);
     }
 
     @Test
-    @Step("Авторизация после регистрации")
+    @Description("Авторизация после регистрации")
     public void checkOfAuthorizationAfterRegistration() {
-        driver.get("https://stellarburgers.nomoreparties.site/login");
+        driver.get(STELLAR_BURGERS_SITE_LOGIN);
         login.userLogin(user.getEmail(), user.getPassword());
         Assert.assertTrue(login.checkUserLogin());
-
     }
 
     @Test
-    @Step("Авторизация через кнопку (Войти в аккаунт)")
+    @Description("Авторизация через кнопку (Войти в аккаунт)")
     public void checkOfAuthorizationThroughTheLoginButton() {
         login.loginSingInAccountButton(user.getEmail(), user.getPassword());
         Assert.assertTrue(login.checkUserLogin());
     }
 
     @Test
-    @Step("Авторизация через кнопку (Личный  кабинет)")
+    @Description("Авторизация через кнопку (Личный  кабинет)")
     public void checkOfAuthorizationThroughThePersonalAccountButton() {
         login.loginPersonalAccountButton(user.getEmail(), user.getPassword());
         Assert.assertTrue(login.checkUserLogin());
-
     }
 
     @Test
-    @Step("Авторизация через кнопку в форме регистрации")
+    @Description("Авторизация через кнопку в форме регистрации")
     public void checkOfAuthorizationThroughTheButtonInTheRegistrationForm() {
         login.loginByRegistrationForm(user.getEmail(), user.getPassword());
         Assert.assertTrue(login.checkUserLogin());
     }
 
     @Test
-    @Step("Авторизация через кнопку в форме восстановления пароля")
+    @Description("Авторизация через кнопку в форме восстановления пароля")
     public void checkOfAuthorizationThroughTheButtonInThePwdRecoveryForm() {
         login.loginByPasswordRecovery(user.getEmail(), user.getPassword());
         Assert.assertTrue(login.checkUserLogin());
@@ -60,7 +62,7 @@ public class UserLoginTest {
 
     @After
     public void cleanUp() {
-        Assert.assertTrue(login.checkingRemoveUser(login.getToken()));
+        Assert.assertTrue(baseURI.checkRemoveUser(login.getToken()));
         driver.quit();
     }
 }
