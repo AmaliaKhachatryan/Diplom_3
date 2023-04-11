@@ -2,7 +2,6 @@ package pageobjects;
 
 
 import io.qameta.allure.Step;
-import jdk.jfr.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -97,7 +96,7 @@ public class UserLogin extends UserRegistration {
         return this;
     }
 
-    public boolean checkingLogout() {
+    public boolean checkLogout() {
         return wait(ACCOUNT_LOGIN_STRING).getText().equals("Вход");
     }
 
@@ -125,7 +124,7 @@ public class UserLogin extends UserRegistration {
         driver.findElement(PERSONAL_ACCOUNT_BUTTON).click();
         return this;
     }
-    public boolean checkingSuccessfulProfile() {
+    public boolean checkSuccessfulProfile() {
         return wait(PROFILE_STRING).getText().equals("Профиль");
     }
     @Step("Получить токен клиента.")

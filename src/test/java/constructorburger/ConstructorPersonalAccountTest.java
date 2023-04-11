@@ -1,6 +1,6 @@
 package constructorburger;
 
-import databaseuri.BaseURI;
+import databaseuri.UserClient;
 import datauser.DataUser;
 import datauser.GeneratorUser;
 import jdk.jfr.Description;
@@ -10,17 +10,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import pageobjects.UserLogin;
 
 public class ConstructorPersonalAccountTest {
-    static DataUser user = GeneratorUser.getRandom();
-    static UserLogin login;
-    static WebDriver driver;
-    static ConstructorBurger constructor;
-    static BaseURI baseURI;
+    private static DataUser user = GeneratorUser.getRandom();
+    private static UserLogin login;
+    private static WebDriver driver;
+    private static ConstructorBurger constructor;
+    private static UserClient userClient;
 
     @BeforeClass
     public static void setUp() {
         // System.setProperty("webdriver.chrome.driver","yandexdriver.exe");
-        baseURI = new BaseURI();
-        baseURI.createUser(user);
+        userClient = new UserClient();
+        userClient.createUser(user);
         driver = new ChromeDriver();
         login = new UserLogin(driver);
         login.loginSingInAccountButton(user.getEmail(), user.getPassword());
@@ -50,7 +50,7 @@ public class ConstructorPersonalAccountTest {
     }
     @AfterClass
     public static void cleanUp() {
-        baseURI.checkRemoveUser(login.getToken());
+        userClient.checkRemoveUser(login.getToken());
         driver.quit();
     }
 }

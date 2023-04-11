@@ -1,25 +1,24 @@
 package pageobjects;
 
-import databaseuri.BaseURI;
+import databaseuri.UserClient;
 import datauser.DataUser;
 import datauser.GeneratorUser;
-import io.qameta.allure.Step;
 import jdk.jfr.Description;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class PersonalAccountTest {
-    static UserLogin login;
-    static DataUser user = GeneratorUser.getRandom();
-    static WebDriver driver;
-    static BaseURI baseURI;
+    private static UserLogin login;
+    private static DataUser user = GeneratorUser.getRandom();
+    private static WebDriver driver;
+    private static UserClient userClient;
 
     @Before
     public void setUp() {
         // System.setProperty("webdriver.chrome.driver","yandexdriver.exe");
-        baseURI = new BaseURI();
-        baseURI.createUser(user);
+        userClient = new UserClient();
+        userClient.createUser(user);
         driver = new ChromeDriver();
         login = new UserLogin(driver);
         login.loginSingInAccountButton(user.getEmail(), user.getPassword());
@@ -29,14 +28,14 @@ public class PersonalAccountTest {
     @Test
     @Description("Перехода в личный кабинет.")
     public void checkLogin() {
-        Assert.assertTrue(login.checkingSuccessfulProfile());
+        Assert.assertTrue(login.checkSuccessfulProfile());
     }
 
     @Test
     @Description("Выход из личного кабинета.")
     public void checkLogout() {
         login.logoutOfPersonalAccount();
-        Assert.assertTrue(login.checkingLogout());
+        Assert.assertTrue(login.checkLogout());
         login.userLogin(user.getEmail(), user.getPassword());
         Assert.assertTrue(login.checkUserLogin());//для получения токена
     }
@@ -57,7 +56,7 @@ public class PersonalAccountTest {
 
     @After
     public void cleanUp() {
-        Assert.assertTrue(baseURI.checkRemoveUser(login.getToken()));
+        Assert.assertTrue(userClient.checkRemoveUser(login.getToken()));
         driver.quit();
     }
 }

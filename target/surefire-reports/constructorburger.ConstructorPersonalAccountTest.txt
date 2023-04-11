@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: constructorburger.ConstructorPersonalAccountTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 39 s - in constructorburger.ConstructorPersonalAccountTest

@@ -1,6 +1,6 @@
 package pageobjects;
 
-import databaseuri.BaseURI;
+import databaseuri.UserClient;
 import datauser.DataUser;
 import datauser.GeneratorUser;
 import jdk.jfr.Description;
@@ -13,13 +13,13 @@ public class UserLoginTest {
     private DataUser user = GeneratorUser.getRandom();
     private UserLogin login;
     private WebDriver driver;
-    private BaseURI baseURI;
+    private UserClient userClient;
 
     @Before
     public void setUp() {
         // System.setProperty("webdriver.chrome.driver","yandexdriver.exe");
-        baseURI = new BaseURI();
-        baseURI.createUser(user);
+        userClient = new UserClient();
+        userClient.createUser(user);
         driver = new ChromeDriver();
         login = new UserLogin(driver);
     }
@@ -62,7 +62,7 @@ public class UserLoginTest {
 
     @After
     public void cleanUp() {
-        Assert.assertTrue(baseURI.checkRemoveUser(login.getToken()));
+        Assert.assertTrue(userClient.checkRemoveUser(login.getToken()));
         driver.quit();
     }
 }

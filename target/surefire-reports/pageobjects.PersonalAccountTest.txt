@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: pageobjects.PersonalAccountTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 142.527 s - in pageobjects.PersonalAccountTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 59.212 s - in pageobjects.PersonalAccountTest

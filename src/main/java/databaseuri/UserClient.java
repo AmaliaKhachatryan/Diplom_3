@@ -2,28 +2,15 @@ package databaseuri;
 
 import datauser.DataUser;
 import io.qameta.allure.Step;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
-import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
-public class BaseURI {
-    protected static final String STELLAR_BURGERS_SITE = "https://stellarburgers.nomoreparties.site/";
-    protected static final String USER_ACTIONS = "api/auth/user/";
-    protected static final String CREATE_USER= "api/auth/register/";
-
-    protected RequestSpecification getBaseReqSpec() {
-        return new RequestSpecBuilder()
-                .setContentType(ContentType.JSON)
-                .setBaseUri(STELLAR_BURGERS_SITE)
-                .build();
-    }
+public class UserClient extends BaseURL {
     @Step("Удалить клиента.")
     public boolean checkRemoveUser(String token) {
-              return given()
+        return given()
                 .spec(getBaseReqSpec())
                 .header("authorization", token)
                 .when()
@@ -36,7 +23,7 @@ public class BaseURI {
     }
     @Step("Cоздать клиента.")
     public ValidatableResponse createUser(DataUser user) {
-              return given()
+        return given()
                 .spec(getBaseReqSpec())
                 .body(user)
                 .when()
@@ -47,4 +34,3 @@ public class BaseURI {
                 .body("success", is(true));
     }
 }
-

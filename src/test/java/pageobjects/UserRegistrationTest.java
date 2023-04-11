@@ -1,6 +1,6 @@
 package pageobjects;
 
-import databaseuri.BaseURI;
+import databaseuri.UserClient;
 import datauser.DataUser;
 import datauser.GeneratorUser;
 
@@ -12,21 +12,20 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-
 public class UserRegistrationTest {
-    DataUser user;
-    UserRegistration registration;
-    UserLogin login;
-    WebDriver driver;
-    BaseURI baseURI;
+    private DataUser user;
+    private UserRegistration registration;
+    private UserLogin login;
+    private WebDriver driver;
+    private UserClient userClient;
 
     @Before
     public void setUp() {
-      // System.setProperty("webdriver.chrome.driver","yandexdriver.exe");
+        // System.setProperty("webdriver.chrome.driver","yandexdriver.exe");
         driver = new ChromeDriver();
         registration = new UserRegistration(driver);
         login = new UserLogin(driver);
-        baseURI=new BaseURI();
+        userClient = new UserClient();
     }
 
     @Test
@@ -66,7 +65,7 @@ public class UserRegistrationTest {
     public void cleanUp() {
         if (!(login.loginSingInAccountButton(user.getEmail(), user.getPassword()) == null) &&
                 (!(login.getToken() == null))) {
-            Assert.assertTrue(baseURI.checkRemoveUser(login.getToken()));
+            Assert.assertTrue(userClient.checkRemoveUser(login.getToken()));
         }
         driver.quit();
     }

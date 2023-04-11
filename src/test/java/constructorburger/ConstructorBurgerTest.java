@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class ConstructorBurgerTest {
-    protected static final String STELLAR_BURGERS_SITE = "https://stellarburgers.nomoreparties.site/";
-    static ConstructorBurger constructor;
-    static WebDriver driver;
+    private static final String STELLAR_BURGERS_SITE = "https://stellarburgers.nomoreparties.site/";
+    private static ConstructorBurger constructor;
+    private static WebDriver driver;
 
     @BeforeClass
     public static void setUp() {
